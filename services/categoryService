@@ -15,7 +15,7 @@ exports.getCategories =  asyncHandler(async (req, res) => {
   skip = (page - 1) * limit
 
     const categories = await CategoryModel.find().skip(skip).limit(limit);
-    res.status(200).json({results : categories.length, data:categories});
+    res.status(200).json({results : categories.length,page :page, data:categories});
   });
 
   // @desc    Get specific category
