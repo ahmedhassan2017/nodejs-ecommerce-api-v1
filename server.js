@@ -7,6 +7,7 @@ const morgan = require('morgan');
 dotenv.config({ path: 'config.env' });
 const dbConnection = require('./config/database');
 const categoryRoute = require('./routes/categoryRoute');
+const subCategoryRoute = require('./routes/subCategoryRoute');
 const ApiError = require('./utils/apiError');
 const globalError = require('./middlewares/errorMiddleware');
 
@@ -34,6 +35,8 @@ app.use(express.json());
 
 // mount the routes
 app.use('/api/v1/categories', categoryRoute);
+app.use('/api/v1/subcategories', subCategoryRoute);
+
 
 // this for catching all other routes
 app.all('*', (req, res, next) => {

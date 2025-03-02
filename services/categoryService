@@ -1,6 +1,6 @@
 
 const slugify = require('slugify');
-const CategoryModel = require('../models/CategotyModel.js');
+const CategoryModel = require('../models/CategoryModel.js');
 // to handle async errors
 const asyncHandler = require('express-async-handler');
 const mongoose = require('mongoose');

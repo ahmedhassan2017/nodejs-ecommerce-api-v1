@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const subCategorySchema = (
+const subCategorySchema =  new mongoose.Schema(
     {
         name:{
             type:String,
@@ -24,4 +24,7 @@ const subCategorySchema = (
 
     },{ timestamps:true }
 );
-module.exports = mongoose.model('SubCategory',subCategorySchema);
+
+const subCategoryModel = mongoose.model('SubCategory',subCategorySchema);
+
+module.exports =subCategoryModel

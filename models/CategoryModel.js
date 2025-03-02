@@ -16,10 +16,8 @@ const CategorySchema = new mongoose.Schema({
     image:{
         type:String,
     },
-},
-{
-    timestamps:true
-});
+}, { timestamps: true }
+);
 // 8 create model
 const CategoryModel = mongoose.model('Category', CategorySchema);
 

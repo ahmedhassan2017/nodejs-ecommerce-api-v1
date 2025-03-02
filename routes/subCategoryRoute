@@ -1,0 +1,10 @@
+const { createsubCategoryValidator } = require("../utils/validators/subCategoryValidator");
+const {createSubCategory,} = require("../services//subcategoryService");
+const express = require("express");
+const subcategoryValidator = require("../utils/validators/subCategoryValidator");
+
+
+const router = express.Router();
+router.route("/").post(createsubCategoryValidator,createSubCategory);
+
+module.exports = router;
