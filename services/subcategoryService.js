@@ -30,7 +30,12 @@ exports.getSubCategories = asyncHandler(async (req, res, next) => {
   limit = parseInt(req.query.limit) || 3
   skip = (page - 1) * limit
 
-    const subcategories = await subCategoryModel.find().skip(skip).limit(limit);
+  let filter = {};
+  // if there is a category id in the params, then filter the subcategories by the category id
+  if (req.params.categoryId) filter = { parent: req.params.categoryId };
+
+    const subcategories = await subCategoryModel.find(filter).skip(skip).limit(limit)
+    // .populate({path: 'parent',select:'name -_id '}); // populate means to show the parent category in the subcategory
     res.status(200).json({results : subcategories.length,page : page, data:subcategories});
   });
 
@@ -40,7 +45,8 @@ exports.getSubCategories = asyncHandler(async (req, res, next) => {
 // @access  Public
 exports.getSubCategory = asyncHandler(async (req, res, next) => {
     const { id } = req.params;
-    const subCategory = await subCategoryModel.findById(id);
+    const subCategory = await subCategoryModel.findById(id)
+    // .populate({path: 'parent',select:'name -_id '});;
 
     if (!subCategory) {
         return next(new ApiError(`SubCategory not found with id of ${id}`, 404));

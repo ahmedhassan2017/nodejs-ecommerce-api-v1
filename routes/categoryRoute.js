@@ -28,4 +28,7 @@ router
   .put(updateCategoryValidator, updateCategory)
   .delete(deleteCategoryValidator, deleteCategory);
 
+  // this is a sub route for the category route to get the subcategories of a category
+  router.use('/:categoryId/subcategories', require('./subCategoryRoute'));
+
 module.exports = router;
