@@ -6,6 +6,13 @@ const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 const ApiError = require("../utils/apiError");
 
+
+// Middleware to set the category id to the body, so that it can be used in the createSubCategory function
+exports.setCatogryIdToBody = (req, res, next) => {
+    if (req.params.categoryId) req.body.parent = req.params.categoryId;
+    next();
+  };
+
 // @desc    Create a subcategory
 // @route   POST /api/v1/subcategories
 // @access  Private
@@ -22,6 +29,16 @@ exports.createSubCategory = asyncHandler(async (req, res, next) => {
     res.status(201).json({  success: true, data: subCategory});
     });
 
+// Middleware to create a filter for the subcategories based on the category id in the params
+exports.createSubCategoryFilter = (req, res, next) => { 
+let filter = {};
+  // if there is a category id in the params, then filter the subcategories by the category id
+  if (req.params.categoryId) filter = { parent: req.params.categoryId };
+    req.filter = filter;
+    next();
+}
+
+
 // @desc    Get all subcategories
 // @route   GET /api/v1/subcategories
 // @access  Public
@@ -30,11 +47,9 @@ exports.getSubCategories = asyncHandler(async (req, res, next) => {
   limit = parseInt(req.query.limit) || 3
   skip = (page - 1) * limit
 
-  let filter = {};
-  // if there is a category id in the params, then filter the subcategories by the category id
-  if (req.params.categoryId) filter = { parent: req.params.categoryId };
+  
 
-    const subcategories = await subCategoryModel.find(filter).skip(skip).limit(limit)
+    const subcategories = await subCategoryModel.find(req.filter).skip(skip).limit(limit)
     // .populate({path: 'parent',select:'name -_id '}); // populate means to show the parent category in the subcategory
     res.status(200).json({results : subcategories.length,page : page, data:subcategories});
   });
