@@ -48,3 +48,35 @@ exports.getSubCategory = asyncHandler(async (req, res, next) => {
     res.status(200).json({ data: subCategory });
 });
 
+// @desc    Update a subcategory
+// @route   PUT /api/v1/subcategories/:id
+// @access  Private
+exports.updateSubCategory = asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+    const { name, parent } = req.body;
+
+    const subCategory = await subCategoryModel.findByIdAndUpdate(
+    {_id: id, },
+    {name,slug:slugify(name)},
+    {parent},
+    {new: true,runValidators: true }
+    );
+
+    if (!subCategory) {
+        return next(new ApiError(`SubCategory not found with id of ${id}`, 404));
+    }
+    res.status(200).json({ data: subCategory });
+});
+
+// @desc   Delete a subcategory
+// @route  DELETE /api/v1/subcategories/:id
+// @access Private
+
+exports.deleteSubCategory = asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+    const subCategory = await subCategoryModel.findByIdAndDelete(id);
+    if (!subCategory) {
+        return next(new ApiError(`SubCategory not found with id of ${id}`, 404));
+    }
+   res.status(200).json({ msg: `subCategory deleted` });
+});

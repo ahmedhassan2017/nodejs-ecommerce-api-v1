@@ -18,14 +18,15 @@ exports.createsubCategoryValidator = [
   validatorMiddleware
 ];
 
-// exports.updatesubCategoryValidator = [
-//   check('id').isMongoId().withMessage('Invalid subCategory id').bail(),
-//   check('name').isString().withMessage('subCategory name must be a string').bail(),
-//   validatorMiddleware
-// ];
+exports.updatesubCategoryValidator = [
+  check('id').isMongoId().withMessage('Invalid subCategory id').bail(),
+  check('name').isString().withMessage('subCategory name must be a string').bail(),
+  check('parent').isMongoId().withMessage('Invalid parent id').bail(),
+  validatorMiddleware
+];
 
-// exports.deletesubCategoryValidator = [
-//   check('id').isMongoId().withMessage('Invalid subCategory id').bail(),
-//   validatorMiddleware
-// ];
+exports.deletesubCategoryValidator = [
+  check('id').isMongoId().withMessage('Invalid subCategory id').bail(),
+  validatorMiddleware
+];
 
