@@ -3,7 +3,7 @@ const {
     getsubsubCategoryValidator,
     updatesubCategoryValidator,
     deletesubCategoryValidator
- } = require("../utils/validators/subCategoryValidator");
+ } = require("../utils/validators/subCategoryValidator.js");
 
  const {
     createSubCategory,
@@ -13,7 +13,7 @@ const {
     deleteSubCategory,
     setCatogryIdToBody,
     createSubCategoryFilter
-} = require("../services//subcategoryService");
+} = require("../services/subcategoryService");
 const express = require("express");
 
 // mergeParams: true is necessary for the route to receive the params from the parent router

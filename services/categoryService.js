@@ -4,7 +4,7 @@ const CategoryModel = require('../models/CategoryModel.js');
 // to handle async errors
 const asyncHandler = require('express-async-handler');
 const mongoose = require('mongoose');
-const ApiError = require('../utils/apiError');
+const ApiError = require('../utils/apiError.js');
 
 // @desc    Get all categories
 // @route   GET /api/v1/categories

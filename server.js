@@ -7,10 +7,10 @@ const morgan = require('morgan');
 dotenv.config({ path: 'config.env' });
 const dbConnection = require('./config/database');
 const categoryRoute = require('./routes/categoryRoute');
-const subCategoryRoute = require('./routes/subCategoryRoute');
+const subCategoryRoute = require('./routes/subCategoryRoute.js');
 const brandRoute = require('./routes/brandRoute');
 const ApiError = require('./utils/apiError');
-const globalError = require('./middlewares/errorMiddleware');
+const globalError = require('./middlewares/errorMiddleware.js/index.js');
 
 // 6. Connect to the database
 dbConnection();
