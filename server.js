@@ -10,7 +10,7 @@ const categoryRoute = require('./routes/categoryRoute');
 const subCategoryRoute = require('./routes/subCategoryRoute.js');
 const brandRoute = require('./routes/brandRoute');
 const ApiError = require('./utils/apiError');
-const globalError = require('./middlewares/errorMiddleware.js/index.js');
+const globalError = require('./middlewares/errorMiddleware');
 
 // 6. Connect to the database
 dbConnection();
