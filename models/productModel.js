@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 
 const productSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: [true, 'Product required'],
         trim: true,
         minlength: [3, 'Product must be at least 3 characters long'],
-        maxlength: [32, 'Product must be at most 32 characters long']
+        maxlength: [100, 'Product must be at most 32 characters long']
     },
     slug: {
         type: String,
@@ -69,7 +69,7 @@ const productSchema = new mongoose.Schema({
     },
     ratingsAverage: {
         type: Number,
-        default: 0,
+        default: 1,
         min: [1, 'Rating must be at least 0'],
         max: [5, 'Rating must be at most 5']
     },
@@ -87,3 +87,7 @@ const productSchema = new mongoose.Schema({
 
 }, { timestamps: true }
 );
+
+
+const ProductModel = mongoose.model('Product', productSchema);
+module.exports = ProductModel;

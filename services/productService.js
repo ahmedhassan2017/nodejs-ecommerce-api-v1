@@ -14,7 +14,8 @@ exports.getProducts =  asyncHandler(async (req, res) => {
   limit = parseInt(req.query.limit) || 3
   skip = (page - 1) * limit
 
-    const products = await ProductModel.find().skip(skip).limit(limit);
+    const products = await ProductModel.find().skip(skip).limit(limit)
+    .populate({path:'category',select:'name'});
     res.status(200).json({results : products.length,page :page, data:products});
   });
 
@@ -24,7 +25,10 @@ exports.getProducts =  asyncHandler(async (req, res) => {
 exports.getProduct = asyncHandler(async (req, res,next) => {
   const { id } = req.params;
   
-  const product = await ProductModel.findById(id);
+  const product = await ProductModel.findById(id).populate(
+    {
+        path:'category',select:'name-_id'
+  });
   if (!product) {
     return next(new ApiError(`No product for this id ${id}`, 404));
   }
@@ -36,8 +40,10 @@ exports.getProduct = asyncHandler(async (req, res,next) => {
 // @access  Private
 exports.updateProduct = asyncHandler(async (req, res,next) => {
   const { id } = req.params;
- req.body.slug = slugify(req.body.name);
-
+ 
+  if(req.body.title){ // if the title is updated
+    req.body.slug = slugify(req.body.title);
+  }
   const product = await ProductModel.findOneAndUpdate(
     { _id: id },
     req.body,
@@ -69,7 +75,7 @@ exports.deleteProduct = asyncHandler(async (req, res,next) => {
 // @route   POST /api/v1/products
 // @access  Private
 exports.createProduct = asyncHandler(async (req, res) => {
-    req.body.slug = slugify(req.body.name);
+    req.body.slug = slugify(req.body.title);
     const product = await ProductModel.create(req.body);
    res.status(201).json({data:product});
 
