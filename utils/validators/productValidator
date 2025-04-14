@@ -61,12 +61,32 @@ exports.createProductValidator = [
     .withMessage('Product must be belong to a category')
     .isMongoId()
     .withMessage('Invalid ID formate')
-    ,
-
+    .custom((categoryId) =>
+      CategoryModel.findById(categoryId).then((category) => {
+        if (!category) {
+          return Promise.reject(
+            new Error(`No category for this id: ${categoryId}`)
+          );
+        }
+      })
+    ),
   check('subcategories')
     .optional()
     .isMongoId()
     .withMessage('Invalid ID formate')
+    .custom((subcategories) => {
+      if (subcategories) {
+        return subcategoriesModel
+          .find({ _id: { $exists:true, $in: subcategories } })
+          .then((result) => {
+            if (result.length<1 || result.length !== subcategories.length) {
+              return Promise.reject(
+          new Error('No subcategory for this id')
+              );
+            }
+          });
+      }
+    })
     ,
 
   check('brand').optional().isMongoId().withMessage('Invalid ID formate'),
