@@ -69,7 +69,8 @@ exports.createProductValidator = [
           );
         }
       })
-    ),
+    )
+    ,
   check('subcategories')
     .optional()
     .isMongoId()
@@ -87,6 +88,24 @@ exports.createProductValidator = [
           });
       }
     })
+    // check that subcategiries belong to the same category
+    .custom((val, { req }) => {
+  return subcategoriesModel.find({ category: req.body.parent }).then((subcategories) => {
+    console.log('subcategories', subcategories);
+    const subCategoriesIdsInDB = [];
+    subcategories.forEach((subCategory) => {
+
+      subCategoriesIdsInDB.push(subCategory._id.toString());
+    });
+
+    if (!val.every((v) => subCategoriesIdsInDB.includes(v))) {
+      return Promise.reject(
+        new Error('subcategories not belong to category')
+      );
+    }
+  });
+})
+
     ,
 
   check('brand').optional().isMongoId().withMessage('Invalid ID formate'),
