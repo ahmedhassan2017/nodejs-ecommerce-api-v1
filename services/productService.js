@@ -5,17 +5,30 @@ const ProductModel = require('../models/productModel.js');
 const asyncHandler = require('express-async-handler');
 const mongoose = require('mongoose');
 const ApiError = require('../utils/apiError.js');
+const { query } = require('express-validator');
 
 // @desc    Get all products
 // @route   GET /api/v1/products
 // @access  Public
 exports.getProducts =  asyncHandler(async (req, res) => {
+  // 1- filtering
+const queryStringObj = {...req.query};
+const excludesFields = ['page','limit','sort','fileds']
+excludesFields.forEach((field=> delete queryStringObj[field]));
+
+// 2- Pagination
   page = parseInt(req.query.page) || 1
   limit = parseInt(req.query.limit) || 3
   skip = (page - 1) * limit
 
-    const products = await ProductModel.find().skip(skip).limit(limit)
-    .populate({path:'category',select:'name'});
+  // Build query
+  const monfooseQuery = ProductModel.find(queryStringObj)
+  .skip(skip)
+  .limit(limit)
+  .populate({path:'category',select:'name'});
+
+  // Execute query
+    const products = await monfooseQuery;
     res.status(200).json({results : products.length,page :page, data:products});
   });
 

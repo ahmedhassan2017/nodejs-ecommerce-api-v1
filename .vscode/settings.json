@@ -7,5 +7,6 @@
         "Methods",
         "Namespaces",
         "Structs"
-    ]
+    ],
+    "git.ignoreLimitWarning": true
 }
